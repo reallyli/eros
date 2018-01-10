@@ -20,18 +20,22 @@ class WeChatController extends Controller
       * Method description:server
       *
       * @author reallyli <zlisreallyli@outlook.com>
-      * @param
+      * @throws \Exception
       * @return mixed
       * 返回值类型：string，array，object，mixed（多种，不确定的），void（无返回值）
       */
      public function server()
      {
-         $app = app('wechat.official_account');
-         $app->server->push(function ($message) {
-             return "终于等到你 ！";
-         });
+        try {
+            $app = app('wechat.official_account');
+            $app->server->push(function ($message) {
+                return "终于等到你 ！";
+            });
 
-         return $app->server->serve();
+            return $app->server->serve();
+        } catch (\Exception $e) {
+            throw $e;
+        }
      }
 
 
