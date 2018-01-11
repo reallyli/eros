@@ -30,6 +30,7 @@ class WeChatController extends Controller
         try {
             $app = app('wechat.official_account');
             $app->server->push(function ($message) {
+                Log::info(json_encode($message));
                 switch ($message['MsgType']) {
                     case 'event':
                         return '你到底在干啥？';
