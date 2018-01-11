@@ -36,7 +36,7 @@ class WeChatController extends Controller
                 switch ($message['MsgType']) {
                     case 'event':
                         //订阅行为
-                        if ($message == 'subscribe') {
+                        if ($message['Event'] == 'subscribe') {
                             return $this->getMyNews();
                         }
                         return '你到底在干啥？';
