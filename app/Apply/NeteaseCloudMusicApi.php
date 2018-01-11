@@ -53,17 +53,17 @@ class NeteaseCloudMusicApi implements SearchInterface
         }
         $data = json_decode($res, true);
         $items = collect($data['result']['songs'])->map(function ($item){
-            // 音乐地址
             $musicUrl = json_decode($this->makeExecAction('music_url', [$item['id']]), true);
+            $musicDetail = json_decode($this->makeExecAction('song_detail', [$item['id']]), true);
             //评论
-            $songComment = json_decode($this->makeExecAction('comment_music', [$item['id'], 1]), true);
+            $musicComment = json_decode($this->makeExecAction('comment_music', [$item['id'], 1]), true);
             return new NewsItem([
                     'title'       => $item['name'] . ' - ' . $item['artists'][0]['name'],
-                    'description' => $songComment['hotComments'][0]['user']['nickname'] . '说：' . $songComment['hotComments'][0]['content'],
+                    'description' => $musicComment['hotComments'][0]['user']['nickname'] . '说：' . $musicComment['hotComments'][0]['content'],
                     'url'         => $musicUrl['data'][0]['url'],
-                    'image'       => $item['artists'][0]['img1v1Url'],
+                    'image'       => $musicDetail['songs'][0]['al']['picUrl'],
                 ]);
-        })->take(2)->toArray();
+        })->take(1)->toArray();
 
         return new News($items);
     }
