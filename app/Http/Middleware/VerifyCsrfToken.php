@@ -13,6 +13,7 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        'weChat'
+        'weChat',
+        'createMenu'
     ];
 }
