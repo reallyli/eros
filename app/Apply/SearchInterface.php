@@ -21,13 +21,4 @@
       */
       public function getSearchResult();
 
-     /**
-      * Method description:make
-      *
-      * @author reallyli <zlisreallyli@outlook.com>
-      * @param 
-      * @return void
-      * 返回值类型：string，array，object，mixed（多种，不确定的），void（无返回值）
-      */
-      public function makeExecAction();
  }

@@ -47,19 +47,24 @@ class NeteaseCloudMusicApi implements SearchInterface
      */
     public function getSearchResult()
     {
-        $res = $this->makeExecAction();
-        if ($res) {
-            $data = json_decode($res, true);
+        $res = $this->makeExecAction($this->action, $this->searchParams);
+        if (!$res) {
+           return '你想听什么歌？';
         }
+        $data = json_decode($res, true);
         $items = collect($data['result']['songs'])->map(function ($item){
+            // 音乐地址
+            $musicUrl = json_decode($this->makeExecAction('music_url', [$item['id']]), true);
+            //评论
+            $songComment = json_decode($this->makeExecAction('comment_music', [$item['id'], 1]), true);
             return new NewsItem([
-                    'title'       => $item['name'],
-                    'description' => $item['alias'][0] ?? $item['artists'][0]['name'],
-                    'url'         => 'https://www.hixiaogan.cn',
-                    'image'       => $item['artists'][0]['img1v1Url'] ?? 'https://www.hixiaogan.cn/img/daily_pic.png',
+                    'title'       => $item['name'] . '-' . $item['artists'][0]['name'],
+                    'description' => $songComment['hotComments'][0]['user']['nickname'] . '说：' . $songComment['hotComments'][0]['content'],
+                    'url'         => $musicUrl['data'][0]['url'],
+                    'image'       => $item['artists'][0]['img1v1Url'],
                 ]);
-        })->toArray();
-
+        })->take(1)->toArray();
+        
         return new News($items);
     }
 
@@ -67,13 +72,15 @@ class NeteaseCloudMusicApi implements SearchInterface
      * Method description:make
      *
      * @author reallyli <zlisreallyli@outlook.com>
+     * @param string $action
+     * @param array $searchParams
      * @throws \Exception
      * @return mixed
      * 返回值类型：string，array，object，mixed（多种，不确定的），void（无返回值）
      */
-    public function makeExecAction()
+    public function makeExecAction(string $action, array $searchParams)
     {
-        $api = $this->getApiByActionName($this->action);
+        $api = $this->getApiByActionName($action);
 
         if (!$api) {
             throw new \Exception('api not found');
@@ -81,7 +88,7 @@ class NeteaseCloudMusicApi implements SearchInterface
 
         $buildHost = $this->host . '/' . key($api);
 
-        $buildParams = collect($api[key($api)])->combine($this->searchParams)->all();
+        $buildParams = collect($api[key($api)])->combine($searchParams)->all();
 
         return Curl::to($buildHost)
             ->withData($buildParams)
@@ -100,8 +107,23 @@ class NeteaseCloudMusicApi implements SearchInterface
     {
         return [
             'keyword_search' => [
-                'search' => [
+                'search/suggest' => [
                     'keywords'
+                ]
+            ],
+            'music_url' => [
+                'music/url' => [
+                    'id'
+                ]
+            ],
+            'song_detail' => [
+                'song/detail' => [
+                    'ids'
+                ]
+            ],
+            'comment_music' => [
+                'comment/music' => [
+                    'id', 'limit'
                 ]
             ]
         ];
