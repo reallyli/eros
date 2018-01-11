@@ -58,13 +58,13 @@ class NeteaseCloudMusicApi implements SearchInterface
             //评论
             $songComment = json_decode($this->makeExecAction('comment_music', [$item['id'], 1]), true);
             return new NewsItem([
-                    'title'       => $item['name'] . '-' . $item['artists'][0]['name'],
+                    'title'       => $item['name'] . ' - ' . $item['artists'][0]['name'],
                     'description' => $songComment['hotComments'][0]['user']['nickname'] . '说：' . $songComment['hotComments'][0]['content'],
                     'url'         => $musicUrl['data'][0]['url'],
                     'image'       => $item['artists'][0]['img1v1Url'],
                 ]);
-        })->take(1)->toArray();
-        
+        })->take(2)->toArray();
+
         return new News($items);
     }
 
