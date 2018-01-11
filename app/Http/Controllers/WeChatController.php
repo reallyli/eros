@@ -43,7 +43,6 @@ class WeChatController extends Controller
                         return '你到底在干啥？';
                         break;
                     case 'text':
-//                        return date('Y-m-d', $message['CreateTime']) . '是个值得纪念的日子终于等到你';
                         $searchNeteaseCloudMusicApi = new NeteaseCloudMusicApi([$message['Content']]);
                         return $searchNeteaseCloudMusicApi->getSearchResult();
                         break;

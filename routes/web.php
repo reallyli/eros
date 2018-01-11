@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    redirect('https://www.hixiaogan.cn');
+    return redirect('https://www.hixiaogan.cn');
 });
 
 Route::any('/weChat', 'WeChatController@server');
