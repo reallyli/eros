@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Log;
  * @package App\Http\Controllers;
  */
 class WeChatController extends Controller
- {
+{
      /**
       * Method description:server
       *
