@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Overtrue\LaravelWeChat\ServiceProvider::class,
+        Ixudra\Curl\CurlServiceProvider::class,
 
     ],
 
@@ -228,6 +229,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'EasyWeChat' => Overtrue\LaravelWeChat\Facade::class,
+        'Curl' => Ixudra\Curl\Facades\Curl::class,
 
     ],
 

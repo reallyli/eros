@@ -7,6 +7,7 @@
  */
 namespace App\Http\Controllers;
 
+use App\Apply\NeteaseCloudMusicApi;
 use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
 use Illuminate\Http\Request;
@@ -42,7 +43,9 @@ class WeChatController extends Controller
                         return '你到底在干啥？';
                         break;
                     case 'text':
-                        return date('Y-m-d', $message['CreateTime']) . '是个值得纪念的日子终于等到你';
+//                        return date('Y-m-d', $message['CreateTime']) . '是个值得纪念的日子终于等到你';
+                        $searchNeteaseCloudMusicApi = new NeteaseCloudMusicApi($message['Content']);
+                        return $searchNeteaseCloudMusicApi->getSearchResult();
                         break;
                     case 'image':
                         return '图片链接是' . $message['PicUrl'];

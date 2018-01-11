@@ -12,9 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    redirect('https://www.hixiaogan.cn');
 });
 
 Route::any('/weChat', 'WeChatController@server');
 
-//Route::get('/createMenu', 'WeChatController@createMenu');
