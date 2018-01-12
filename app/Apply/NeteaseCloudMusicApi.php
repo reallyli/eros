@@ -49,8 +49,8 @@ class NeteaseCloudMusicApi implements SearchInterface
     public function getSearchResult(int $limit = 1) : News
     {
         $data = $this->makeExecAction($this->action, $this->searchParams);
-        if (!$data) {
-           return '你想听什么歌？说出歌曲的歌名...';
+        if (!$data || !$data['result']) {
+            return $this->getDefaultItem();
         }
         $items = collect($data['result']['songs'])->map(function ($item) {
             return new NewsItem([
@@ -128,7 +128,7 @@ class NeteaseCloudMusicApi implements SearchInterface
         // 随机评论
         $randCommentShow = count($musicComment['hotComments']) > 2 ? mt_rand(0, count($musicComment['hotComments']) - 1 ) : 0;
 
-        return $musicComment['hotComments'][$randCommentShow]['user']['nickname'] . '说：' . $musicComment['hotComments'][$randCommentShow]['content'];
+        return $musicComment['hotComments'][$randCommentShow]['user']['nickname'] . ' 评论道👉 ' . $musicComment['hotComments'][$randCommentShow]['content'];
     }
 
     /**
@@ -159,5 +159,27 @@ class NeteaseCloudMusicApi implements SearchInterface
         $musicUrl = $this->makeExecAction('music_url', [$musicId]);
 
         return $musicUrl['data'][0]['url'];
+    }
+
+    /**
+     * Method description:getDefaultItem
+     *
+     * @author reallyli <zlisreallyli@outlook.com>
+     * @param 
+     * @return mixed
+     * 返回值类型：string，array，object，mixed（多种，不确定的），void（无返回值）
+     */
+    public function getDefaultItem() : News
+    {
+        $items = [
+            new NewsItem([
+                'title'       => '网易云音乐在线搜索歌曲',
+                'description' => '你想听什么歌？请输入你的歌名...😘',
+                'url'         => '#',
+                'image'       => 'http://p1.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg',
+            ]),
+        ];
+
+        return new News($items);
     }
 }
