@@ -42,10 +42,11 @@ class NeteaseCloudMusicApi implements SearchInterface
      * Method description:getSearchResult
      *
      * @author reallyli <zlisreallyli@outlook.com>
+     * @param int $limit
      * @return mixed
      * 返回值类型：string，array，object，mixed（多种，不确定的），void（无返回值）
      */
-    public function getSearchResult()
+    public function getSearchResult(int $limit = 1) : News
     {
         $data = $this->makeExecAction($this->action, $this->searchParams);
         if (!$data) {
@@ -58,7 +59,7 @@ class NeteaseCloudMusicApi implements SearchInterface
                     'url'         => $this->getMusicUrl($item['id']),
                     'image'       => $this->getMusicImage($item['id']),
                 ]);
-        })->take(1)->toArray();
+        })->take($limit)->toArray();
 
         return new News($items);
     }
@@ -121,7 +122,7 @@ class NeteaseCloudMusicApi implements SearchInterface
     public function getMusicDescription(int  $musicId, string $defaultComment, int  $limit = 1) : string
     {
         $musicComment = $this->makeExecAction('comment_music', [$musicId, $limit]);
-        if (empty($musicComment)) {
+        if (empty($musicComment['hotComments'])) {
             return $defaultComment;
         }
         // 随机评论

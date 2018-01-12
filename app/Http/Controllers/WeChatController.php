@@ -43,8 +43,8 @@ class WeChatController extends Controller
                         return '你到底在干啥？';
                         break;
                     case 'text':
-                        $searchNeteaseCloudMusicApi = new NeteaseCloudMusicApi([$message['Content']]);
-                        return $searchNeteaseCloudMusicApi->getSearchResult();
+                        $searchNetEaseCloudMusicApi = new NeteaseCloudMusicApi([$message['Content']]);
+                        return $searchNetEaseCloudMusicApi->getSearchResult(1);
                         break;
                     case 'image':
                         return '图片链接是' . $message['PicUrl'];
