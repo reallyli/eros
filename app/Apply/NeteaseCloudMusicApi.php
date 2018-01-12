@@ -16,8 +16,6 @@ class NeteaseCloudMusicApi implements SearchInterface
 {
     protected $host;
 
-    protected $initApiCollect;
-
     protected $action;
 
     protected $searchParams;
