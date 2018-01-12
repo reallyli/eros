@@ -47,21 +47,16 @@ class NeteaseCloudMusicApi implements SearchInterface
      */
     public function getSearchResult()
     {
-        $res = $this->makeExecAction($this->action, $this->searchParams);
-        if (!$res) {
-           return '你想听什么歌？';
+        $data = $this->makeExecAction($this->action, $this->searchParams);
+        if (!$data) {
+           return '你想听什么歌？说出歌曲的歌名...';
         }
-        $data = json_decode($res, true);
-        $items = collect($data['result']['songs'])->map(function ($item){
-            $musicUrl = json_decode($this->makeExecAction('music_url', [$item['id']]), true);
-            $musicDetail = json_decode($this->makeExecAction('song_detail', [$item['id']]), true);
-            $musicComment = json_decode($this->makeExecAction('comment_music', [$item['id'], 1]), true);
-            $randCommentShow = mt_rand(0, count($musicComment['hotComments']) - 1 );
+        $items = collect($data['result']['songs'])->map(function ($item) {
             return new NewsItem([
                     'title'       => $item['name'] . ' - ' . $item['artists'][0]['name'],
-                    'description' => $musicComment['hotComments'][$randCommentShow]['user']['nickname'] . '说：' . $musicComment['hotComments'][$randCommentShow]['content'],
-                    'url'         => $musicUrl['data'][0]['url'],
-                    'image'       => $musicDetail['songs'][0]['al']['picUrl'],
+                    'description' => $this->getMusicDescription($item['id'], $item['album']['name']),
+                    'url'         => $this->getMusicUrl($item['id']),
+                    'image'       => $this->getMusicImage($item['id']),
                 ]);
         })->take(1)->toArray();
 
@@ -90,43 +85,14 @@ class NeteaseCloudMusicApi implements SearchInterface
 
         $buildParams = collect($api[key($api)])->combine($searchParams)->all();
 
-        return Curl::to($buildHost)
+        $send = Curl::to($buildHost)
             ->withData($buildParams)
             ->get();
-    }
+        if (!$send) {
+            return false;
+        }
 
-    /**
-     * Method description:setInitApiList
-     *
-     * @author reallyli <zlisreallyli@outlook.com>
-     * @param 
-     * @return array
-     * 返回值类型：string，array，object，mixed（多种，不确定的），void（无返回值）
-     */
-    public function setInitApiList() : array
-    {
-        return [
-            'keyword_search' => [
-                'search/suggest' => [
-                    'keywords'
-                ]
-            ],
-            'music_url' => [
-                'music/url' => [
-                    'id'
-                ]
-            ],
-            'song_detail' => [
-                'song/detail' => [
-                    'ids'
-                ]
-            ],
-            'comment_music' => [
-                'comment/music' => [
-                    'id', 'limit'
-                ]
-            ]
-        ];
+        return json_decode($send, true);
     }
 
     /**
@@ -139,6 +105,58 @@ class NeteaseCloudMusicApi implements SearchInterface
      */
     public function getApiByActionName(string $actionName) : array
     {
-        return $this->setInitApiList()[$actionName] ?? [];
+        return config('neteasecloudmusic')[$actionName] ?? [];
+    }
+
+    /**
+     * Method description:getMusicDescription
+     *
+     * @author reallyli <zlisreallyli@outlook.com>
+     * @param int $musicId
+     * @param string $defaultComment
+     * @param int $limit
+     * @return string
+     * 返回值类型：string，array，object，mixed（多种，不确定的），void（无返回值）
+     */
+    public function getMusicDescription(int  $musicId, string $defaultComment, int  $limit = 1) : string
+    {
+        $musicComment = $this->makeExecAction('comment_music', [$musicId, $limit]);
+        if (empty($musicComment)) {
+            return $defaultComment;
+        }
+        // 随机评论
+        $randCommentShow = count($musicComment['hotComments']) > 2 ? mt_rand(0, count($musicComment['hotComments']) - 1 ) : 0;
+
+        return $musicComment['hotComments'][$randCommentShow]['user']['nickname'] . '说：' . $musicComment['hotComments'][$randCommentShow]['content'];
+    }
+
+    /**
+     * Method description:getMusicImage
+     *
+     * @author reallyli <zlisreallyli@outlook.com>
+     * @param int $musicId
+     * @return string
+     * 返回值类型：string，array，object，mixed（多种，不确定的），void（无返回值）
+     */
+    public function getMusicImage(int $musicId) : string
+    {
+        $musicDetail = $this->makeExecAction('song_detail', [$musicId]);
+
+        return $musicDetail['songs'][0]['al']['picUrl'];
+    }
+
+    /**
+     * Method description:getMusicUrl
+     *
+     * @author reallyli <zlisreallyli@outlook.com>
+     * @param int $musicId
+     * @return string
+     * 返回值类型：string，array，object，mixed（多种，不确定的），void（无返回值）
+     */
+    public function getMusicUrl(int $musicId) : string
+    {
+        $musicUrl = $this->makeExecAction('music_url', [$musicId]);
+
+        return $musicUrl['data'][0]['url'];
     }
 }
