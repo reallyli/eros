@@ -56,7 +56,7 @@ class WeChatController extends Controller
                         return '你发的什么玩意儿？视频消息媒体ID' . $message['MediaId'];
                         break;
                     case 'location':
-                        return '哈哈 我知道你在哪里了，经度：' . $message['Location_X'] . '，维度：' . $message['Location_Y'] . ", 具体位置是" . $message['Label'];
+                        return '哈哈 我知道你在哪里了，经度：' . $message['Location_X'] . '，纬度：' . $message['Location_Y'] . ", 具体位置是" . $message['Label'];
                         break;
                     case 'link':
                         return '你这个链接我懂得，消息标题是' . $message['Title'] . '，消息描述是' . $message['Description'] . '，消息链接是' . $message['Url'];
