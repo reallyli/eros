@@ -1,0 +1,15 @@
+{
+  "name": "eros",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "reallyli <zlisreallyli@outlook.com> (https://github.com/reallyli)",
+  "license": "MIT",
+  "dependencies": {
+    "materialize-css": "^0.100.2"
+  }
+}

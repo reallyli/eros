@@ -17,3 +17,7 @@ Route::get('/', function () {
 
 Route::any('/weChat', 'WeChatController@server');
 
+Route::group(['middleware' => ['web'], 'prefix' => 'api'], function () {
+    Route::get('logs/' . env('ACCESS_LOG_TOKEN'), '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+});
+
