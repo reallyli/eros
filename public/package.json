@@ -10,6 +10,9 @@
   "author": "reallyli <zlisreallyli@outlook.com> (https://github.com/reallyli)",
   "license": "MIT",
   "dependencies": {
+    "aplayer": "^1.6.0",
+    "axios": "^0.17.1",
+    "dplayer": "^1.20.0",
     "materialize-css": "^0.100.2"
   }
 }

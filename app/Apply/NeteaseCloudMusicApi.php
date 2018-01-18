@@ -54,7 +54,8 @@ class NeteaseCloudMusicApi implements SearchInterface
             return new NewsItem([
                     'title'       => $item['name'] . ' - ' . $item['artists'][0]['name'],
                     'description' => $this->getMusicDescription($item['id'], $item['album']['name']),
-                    'url'         => $this->getMusicUrl($item['id']),
+//                    'url'         => $this->getMusicUrl($item['id']),
+                    'url'         => env('API_HOST') . '/music/detail?id=' . $item['id'],
                     'image'       => $this->getMusicImage($item['id']),
                 ]);
         })->take($limit)->toArray();
@@ -173,7 +174,7 @@ class NeteaseCloudMusicApi implements SearchInterface
             new NewsItem([
                 'title'       => '网易云音乐在线搜索歌曲',
                 'description' => '你想听什么歌？请输入你的歌名...😘',
-                'url'         => '#',
+                'url'         => 'https://www.hixiaogan.cn',
                 'image'       => 'http://p1.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg',
             ]),
         ];
