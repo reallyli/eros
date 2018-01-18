@@ -14,9 +14,10 @@ class MusicController extends Controller
         $comment = $neteaseCloudMusicApi->makeExecAction('comment_music', [$musicId, 1]);
         $musicDetail = $neteaseCloudMusicApi->makeExecAction('song_detail', [$musicId]);
         $lyric = $neteaseCloudMusicApi->makeExecAction('get_lyric', [$musicId]);
+        $source = $neteaseCloudMusicApi->getMusicUrl($musicId);
         $musicLyric = str_replace("\n", "\\n", $lyric['lrc']['lyric']);
 
-        return view('music.detail', compact('comment', 'musicDetail', 'musicLyric'));
+        return view('music.detail', compact('comment', 'musicDetail', 'musicLyric', 'source'));
     }
 
 }

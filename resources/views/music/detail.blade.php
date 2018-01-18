@@ -50,7 +50,7 @@
         var author = "{{$musicDetail['songs'][0]['ar'][0]['name']}}";
         var musicName = "{{$musicDetail['songs'][0]['name']}}";
         var toastContent = $('<span>'+musicName+'</span>').add($('<button class="btn-flat toast-action">'+author+'</button>'));
-        Materialize.toast(toastContent, 3000, 'rounded');
+        Materialize.toast(toastContent, 2000, 'rounded');
         var ap = new APlayer({
             element: document.getElementById('aplayer1'),
             autoplay: true,
@@ -60,7 +60,7 @@
             music: {
                 title: musicName,
                 author: author,
-                url: 'http://oqefp0r4y.bkt.clouddn.com/backgroundmusic.mp3',
+                url: "{{$source}}",
                 lrc: "{{$musicLyric}}"
             }
         });
