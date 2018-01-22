@@ -74,7 +74,7 @@
         }
         // my dropload
 //        var requestUrl = 'https://'+window.location.host+'/music/comment?id='+getQueryString('id');
-        var requestUrl = 'https://api.hixiaogan.cn/music/comment?id='+getQueryString('id');
+        var requestUrl = 'http://music.hixiaogan.cn/comment/music?id='+getQueryString('id')+'&limit=1';
         $('.card-content').dropload({
             scrollArea : window,
             loadDownFn : function(me){
@@ -88,8 +88,6 @@
                         me.resetload();
                     },
                     error: function(xhr, type){
-                        alert('Ajax error!');
-                        // 即使加载出错，也得重置
                         me.resetload();
                     }
                 });

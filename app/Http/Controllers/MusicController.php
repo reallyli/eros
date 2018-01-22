@@ -49,22 +49,4 @@ class MusicController extends Controller
         dd($data);
     }
 
-    /**
-     * Method description:getComment
-     *
-     * @author reallyli <zlisreallyli@outlook.com>
-     * @param Request $request
-     * @return string
-     * 返回值类型：string，array，object，mixed（多种，不确定的），void（无返回值）
-     */
-    public function getComment(Request $request) : string
-    {
-        $musicId = $request->input('id');
-        $page = $request->input('page', 1);
-
-        $comment = $this->musicObj->makeExecAction('comment_music', [$musicId, $page]);
-
-        return response()->json($comment);
-    }
-
 }

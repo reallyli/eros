@@ -23,5 +23,4 @@ Route::group(['middleware' => ['web'], 'prefix' => 'api'], function () {
 
 Route::group(['middleware' => ['web', 'api'], 'prefix' => 'music'], function () {
     Route::get('detail', 'MusicController@list');
-    Route::get('comment', 'MusicController@getComment');
 });
