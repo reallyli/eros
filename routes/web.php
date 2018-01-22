@@ -21,7 +21,7 @@ Route::group(['middleware' => ['web'], 'prefix' => 'api'], function () {
     Route::get('logs/' . env('ACCESS_LOG_TOKEN'), '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 });
 
-Route::group(['middleware' => ['web'], 'prefix' => 'music'], function () {
+Route::group(['middleware' => ['web', 'api'], 'prefix' => 'music'], function () {
     Route::get('detail', 'MusicController@list');
     Route::get('comment', 'MusicController@getComment');
 });

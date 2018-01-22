@@ -73,7 +73,8 @@
             return null;
         }
         // my dropload
-        var requestUrl = 'https://'+window.location.host+'/music/comment?id='+getQueryString('id');
+//        var requestUrl = 'https://'+window.location.host+'/music/comment?id='+getQueryString('id');
+        var requestUrl = 'https://api.hixiaogan.cn/music/comment?id='+getQueryString('id');
         $('.card-content').dropload({
             scrollArea : window,
             loadDownFn : function(me){

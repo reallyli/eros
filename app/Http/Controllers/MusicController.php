@@ -14,7 +14,7 @@ class MusicController extends Controller
      *
      * @author reallyli <zlisreallyli@outlook.com>
      * @param 
-     * @return void
+     * @return mixed
      * 返回值类型：string，array，object，mixed（多种，不确定的），void（无返回值）
      */
     public function __construct()
